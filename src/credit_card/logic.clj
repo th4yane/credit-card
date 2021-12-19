@@ -1,8 +1,5 @@
 (ns credit-card.logic)
 
-(defn usuario? [cliente usuario]
-  (= (:usuario cliente) usuario))
-
 (defn total-das-compras [compras]
   (->> compras
        (map :valor)
@@ -18,3 +15,8 @@
   (->> compras
        (group-by :categoria)
        (map gasto-total-por-categoria)))
+
+(defn busca-compra-por-filtro[compras filtro valor]
+  (->> compras
+       (group-by filtro)
+       (#(get % valor))))
