@@ -1,4 +1,6 @@
-(ns credit-card.logic)
+(ns credit-card.logic
+  (:require [schema.core :as s]
+            [credit-card.model :as c.model]))
 
 (defn total-das-compras [compras]
   (->> compras
@@ -20,5 +22,11 @@
        (group-by filtro)
        (#(get % valor))))
 
-(defn adiciona-compra [compras nova-compra]
+(defn tenta-adicionar-compra [compras nova-compra]
   (conj compras nova-compra))
+
+(s/defn adiciona-compra [compras :- [c.model/Compra]
+                       nova-compra :- c.model/Compra]
+  (if-let [compras-atualizadas (tenta-adicionar-compra compras nova-compra)]
+    {:compras compras-atualizadas :resultado :sucesso}
+    {:compras compras :resultado :nao-foi-possivel-adicionar-compra}))
