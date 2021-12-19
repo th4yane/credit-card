@@ -30,3 +30,10 @@
   (if-let [compras-atualizadas (tenta-adicionar-compra compras nova-compra)]
     {:compras compras-atualizadas :resultado :sucesso}
     {:compras compras :resultado :nao-foi-possivel-adicionar-compra}))
+
+(s/defn compras-do-cliente :- [c.model/Compra]
+  [cliente :- c.model/Cliente]
+  (->> cliente
+       :cartao
+       (mapv :compras)
+       (reduce concat)))
