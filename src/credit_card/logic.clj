@@ -7,15 +7,16 @@
        (map :valor)
        (reduce +)))
 
-(defn gasto-total-por-categoria
+(s/defn gasto-total-por-categoria :- c.model/ValoresCategoria
   [[categoria compras]]
   {:categoria   categoria
    :valor-total (total-das-compras compras)})
 
-(defn resumo-valor-por-categoria [compras]
+(s/defn resumo-valor-por-categoria :- [c.model/ValoresCategoria]
+  [compras :- [c.model/Compra]]
   (->> compras
        (group-by :categoria)
-       (map gasto-total-por-categoria)))
+       (mapv gasto-total-por-categoria)))
 
 (defn busca-compra-por-filtro[compras filtro valor]
   (->> compras

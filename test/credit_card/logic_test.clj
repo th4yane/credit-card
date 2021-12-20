@@ -47,3 +47,22 @@
                                                              :valor           19.90
                                                              :estabelecimento "bk"
                                                              :categoria        :alimentacao}]}]})))))
+
+(deftest resumo-valor-por-categoria-test
+  (testing "Retorno de valores por categoria"
+    (is (= [{:categoria   :alimentacao
+             :valor-total 60}
+            {:categoria   :vestuario
+             :valor-total 120.30}]
+           (c.logic/resumo-valor-por-categoria [{:data            "01/02/2021"
+                                                 :valor           20
+                                                 :estabelecimento "bk"
+                                                 :categoria       :alimentacao}
+                                                {:data            "01/02/2021"
+                                                 :valor           40
+                                                 :estabelecimento "bk"
+                                                 :categoria       :alimentacao}
+                                                {:data            "01/02/2021"
+                                                 :valor           120.30
+                                                 :estabelecimento "bk"
+                                                 :categoria       :vestuario}])))))

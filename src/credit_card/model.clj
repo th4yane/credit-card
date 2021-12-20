@@ -19,3 +19,7 @@
    :nome s/Str
    :cpf s/Str
    :cartao [Cartao]})
+
+(def ValoresCategoria
+  {:categoria s/Keyword
+   :valor-total s/Num})
