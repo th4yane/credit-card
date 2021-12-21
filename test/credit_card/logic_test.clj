@@ -6,63 +6,67 @@
 (s/set-fn-validation! true)
 
 (deftest adiciona-compra-test
-
   (testing "Adiciona nova compra"
-    (is (= {:compras [{:data            "01/02/2021"
-                       :valor           29.90
-                       :estabelecimento "renner"
-                       :categoria        :vestuario}] :resultado :sucesso}
-           (c.logic/adiciona-compra nil {:data            "01/02/2021"
-                                                   :valor           29.90
-                                                   :estabelecimento "renner"
-                                                   :categoria       :vestuario})))))
+    (is (= {:compras [{:compra/id              #uuid "a915a7ea-5645-4d9b-ae72-e971482104ed"
+                       :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+                       :compra/valor           29.90M
+                       :compra/estabelecimento "renner"
+                       :compra/categoria       :vestuario}] :resultado :sucesso}
+           (c.logic/adiciona-compra nil {:compra/id              #uuid "a915a7ea-5645-4d9b-ae72-e971482104ed"
+                                         :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+                                         :compra/valor           29.90M
+                                         :compra/estabelecimento "renner"
+                                         :compra/categoria       :vestuario})))))
 
 (deftest compras-do-cliente-test
 
   (testing "Listagem de compras"
-    (is (= [{:data            "01/02/2021"
-             :valor           29.90
-             :estabelecimento "renner"
-             :categoria        :vestuario}
-            {:data            "01/02/2021"
-             :valor           19.90
-             :estabelecimento "bk"
-             :categoria        :alimentacao}]
-           (c.logic/compras-do-cliente {:id 1
-                                        :nome "nome"
-                                        :cpf "cpf"
-                                        :cartao [{:numero "123456789012"
-                                                  :cvv "012"
-                                                  :validade "01/24"
-                                                  :limite 2000
-                                                  :compras [{:data            "01/02/2021"
-                                                             :valor           29.90
-                                                             :estabelecimento "renner"
-                                                             :categoria       :vestuario}]}
-                                                 {:numero "123456789012"
-                                                  :cvv "012"
-                                                  :validade "01/24"
-                                                  :limite 2000
-                                                  :compras [{:data            "01/02/2021"
-                                                             :valor           19.90
-                                                             :estabelecimento "bk"
-                                                             :categoria        :alimentacao}]}]})))))
+    (is (= [{:compra/id              #uuid "a915a7ea-5645-4d9b-ae72-e971482104ed"
+             :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+             :compra/valor           29.90M
+             :compra/estabelecimento "bk"
+             :compra/categoria       :alimentacao}
+            {:compra/id              #uuid "b915a7ea-5645-4d9b-ae72-e971412304ed"
+             :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+             :compra/valor           100M
+             :compra/estabelecimento "renner"
+             :compra/categoria       :vestuario}]
+           (c.logic/compras-do-cliente {:cliente/id     #uuid "c115a7ea-5645-4d9b-ae72-e971412304ed"
+                                        :cliente/nome   "nome"
+                                        :cliente/cpf    "cpf"
+                                        :cliente/cartao  {:cartao/numero   "123456789012"
+                                                            :cartao/cvv      "012"
+                                                            :cartao/validade "01/24"
+                                                            :cartao/limite   2000
+                                                            :cartao/compras  [{:compra/id              #uuid "a915a7ea-5645-4d9b-ae72-e971482104ed"
+                                                                               :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+                                                                               :compra/valor           29.90M
+                                                                               :compra/estabelecimento "bk"
+                                                                               :compra/categoria       :alimentacao}
+                                                                              {:compra/id              #uuid "b915a7ea-5645-4d9b-ae72-e971412304ed"
+                                                                               :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+                                                                               :compra/valor           100M
+                                                                               :compra/estabelecimento "renner"
+                                                                               :compra/categoria       :vestuario}]}})))))
 
 (deftest resumo-valor-por-categoria-test
   (testing "Retorno de valores por categoria"
     (is (= [{:categoria   :alimentacao
-             :valor-total 60}
+             :valor-total 60M}
             {:categoria   :vestuario
-             :valor-total 120.30}]
-           (c.logic/resumo-valor-por-categoria [{:data            "01/02/2021"
-                                                 :valor           20
-                                                 :estabelecimento "bk"
-                                                 :categoria       :alimentacao}
-                                                {:data            "01/02/2021"
-                                                 :valor           40
-                                                 :estabelecimento "bk"
-                                                 :categoria       :alimentacao}
-                                                {:data            "01/02/2021"
-                                                 :valor           120.30
-                                                 :estabelecimento "bk"
-                                                 :categoria       :vestuario}])))))
+             :valor-total 120.30M}]
+           (c.logic/resumo-valor-por-categoria [{:compra/id              #uuid "a915a7ea-5645-4d9b-ae72-e971482104ed"
+                                                 :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+                                                 :compra/valor           20M
+                                                 :compra/estabelecimento "bk"
+                                                 :compra/categoria       :alimentacao}
+                                                {:compra/id              #uuid "b115a7ea-5645-4d9b-ae72-e971482104ed"
+                                                 :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+                                                 :compra/valor           40M
+                                                 :compra/estabelecimento "bk"
+                                                 :compra/categoria       :alimentacao}
+                                                {:compra/id              #uuid "c315a7ea-5645-4d9b-ae72-e971482104ed"
+                                                 :compra/data            #inst "2021-12-21T21:39:20.387-00:00"
+                                                 :compra/valor           120.30M
+                                                 :compra/estabelecimento "bk"
+                                                 :compra/categoria       :vestuario}])))))
